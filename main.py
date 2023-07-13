@@ -25,10 +25,18 @@ def validate_identification_number(identification_number):
 
 def validate_row(row):
     errors = []
-    for validator in [validate_name, validate_married, validate_gender, validate_identification_number]:
-        valid, error = validator(getattr(row, validator.__name__))
+    validators = {
+        'name': validate_name,
+        'married': validate_married,
+        'gender': validate_gender,
+        'id_number': validate_identification_number
+    }
+    
+    for field, validator in validators.items():
+        valid, error = validator(getattr(row, field))
         if not valid:
             errors.append(error)
+            
     return len(errors) == 0, errors
 
 def process_csv(file_path):
