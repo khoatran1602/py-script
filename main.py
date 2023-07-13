@@ -53,6 +53,11 @@ def process_csv(file_path):
             else:
                 print(f"Invalid row: {row}")
 
+        # Remove duplicated rows from result_map
+        for duplicate in duplicated_rows:
+            if duplicate.name in result_map:
+                del result_map[duplicate.name]
+
     return result_map, duplicated_rows
 
 if __name__ == '__main__':
