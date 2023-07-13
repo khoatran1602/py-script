@@ -37,6 +37,9 @@ def process_csv(file_path):
         Data = namedtuple('Data', fieldnames)
         reader = csv.DictReader(csvfile, fieldnames=fieldnames)
 
+        # Skip the header (first row)
+        next(reader)
+
         result_map = {}
         duplicated_rows = []
 
