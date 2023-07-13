@@ -9,7 +9,7 @@ def validate_name(name):
     return True, ""
 
 def validate_married(married):
-    if married.lower() not in {'Y', 'N'}:
+    if married.lower() not in {'y', 'n'}:
         return False, "Invalid married status"
     return True, ""
 
