@@ -93,7 +93,7 @@ if __name__ == '__main__':
     valid_data_map, duplicated_rows = process_csv(file_path)
     print("Valid data map:")
     for key, value in valid_data_map.items():
-        print(f"{key}: {value}")
+        print(f"{value}")
 
     print("\nDuplicated rows:")
     for row in duplicated_rows:
