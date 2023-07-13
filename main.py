@@ -7,17 +7,10 @@ def validate_name(name):
     return len(name) <= 50
 
 def validate_married(married):
-    return married.lower() in {'true', 'false'}
+    return married.lower() in {'Y', 'N'}
 
 def validate_gender(gender):
     return gender in {'M', 'F'}
-
-def validate_dob(dob):
-    try:
-        datetime.strptime(dob, '%Y-%m-%d')
-        return True
-    except ValueError:
-        return False
 
 def validate_identification_number(identification_number):
     return identification_number.isdigit() and len(identification_number) == 10
@@ -27,7 +20,6 @@ def validate_row(row):
         validate_name(row.name),
         validate_married(row.married),
         validate_gender(row.gender),
-        validate_dob(row.dob),
         validate_identification_number(row.id_number)
     ])
 
