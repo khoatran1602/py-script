@@ -44,6 +44,8 @@ def process_csv(file_path):
         duplicated_rows = []
 
         for row in reader:
+            # Use a dictionary comprehension to convert the keys to string
+            row = {str(key): value for key, value in row.items()}
             data = Data(**row)
             is_valid, errors = validate_row(data)
 
