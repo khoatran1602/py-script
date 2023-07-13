@@ -19,7 +19,7 @@ def validate_gender(gender):
     return True, ""
 
 def validate_identification_number(identification_number):
-    if not identification_number.isdigit() or len(identification_number) != 10:
+    if not identification_number.isdigit() or len(identification_number) != 5:
         return False, "Invalid identification number"
     return True, ""
 
