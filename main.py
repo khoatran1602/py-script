@@ -19,7 +19,7 @@ def validate_gender(gender):
     return True, ""
 
 def validate_identification_number(identification_number):
-    if not identification_number.isdigit() or len(identification_number) != 5:
+    if identification_number is None or not identification_number.isdigit() or len(identification_number) != 5:
         return False, "Invalid identification number"
     return True, ""
 
@@ -76,7 +76,7 @@ def process_csv(file_path):
                 else:
                     result_map[data.name] = converted_data
             else:
-                print(f"Invalid row: {row} - Errors: {', '.join(errors)}")
+                print(f"Invalid row (Row {row_number}): {row} - Errors: {', '.join(errors)}")
 
             row_number += 1  # Increment the row_number variable
 
