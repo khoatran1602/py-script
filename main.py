@@ -55,9 +55,6 @@ def process_csv(file_path):
         row_number = 2  # Start at 2, since the first row is the header
 
         for row in reader:
-            # Remove the 'dob' field from the row
-            row.pop('dob')
-
             print(f"Type of id_number (Row {row_number}): {type(row['id_number'])}")
 
             data = Data(**row)
