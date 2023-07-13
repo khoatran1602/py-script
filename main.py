@@ -35,7 +35,7 @@ def process_csv(file_path):
     with open(file_path, 'r') as csvfile:
         fieldnames = ['name', 'married', 'gender', 'id_number']
         Data = namedtuple('Data', fieldnames)
-        reader = csv.DictReader(csvfile, fieldnames=fieldnames)
+        reader = csv.DictReader(csvfile, fieldnames=fieldnames, skipinitialspace=True)
 
         # Skip the header (first row)
         next(reader)
@@ -44,8 +44,6 @@ def process_csv(file_path):
         duplicated_rows = []
 
         for row in reader:
-            # Use a dictionary comprehension to convert the keys to string
-            row = {str(key): value for key, value in row.items()}
             data = Data(**row)
             is_valid, errors = validate_row(data)
 
