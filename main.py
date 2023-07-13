@@ -33,7 +33,7 @@ def validate_row(row):
 
 def process_csv(file_path):
     with open(file_path, 'r') as csvfile:
-        fieldnames = ['name', 'married', 'gender', 'dob', 'id_number']
+        fieldnames = ['name', 'married', 'gender', 'id_number']
         Data = namedtuple('Data', fieldnames)
         reader = csv.DictReader(csvfile, fieldnames=fieldnames)
 
