@@ -33,8 +33,8 @@ def validate_row(row):
 
 def process_csv(file_path):
     with open(file_path, 'r') as csvfile:
-        fieldnames = ['name', 'married', 'gender', 'id_number']
-        Data = namedtuple('Data', fieldnames)
+        fieldnames = ['name', 'married', 'gender', 'dob', 'id_number']
+        Data = namedtuple('Data', [field for field in fieldnames if field != 'dob'])
         reader = csv.DictReader(csvfile, fieldnames=fieldnames, skipinitialspace=True)
 
         # Skip the header (first row)
@@ -44,11 +44,14 @@ def process_csv(file_path):
         duplicated_rows = []
 
         for row in reader:
+            # Remove the 'dob' field from the row
+            row.pop('dob')
+
             data = Data(**row)
             is_valid, errors = validate_row(data)
 
             if is_valid:
-                # Convert all fields to strings except 'id_number' and remove 'dob'
+                # Convert all fields to strings except 'id_number'
                 converted_data = {
                     'name': str(data.name),
                     'married': str(data.married),
