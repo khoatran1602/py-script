@@ -58,6 +58,8 @@ def process_csv(file_path):
             # Remove the 'dob' field from the row
             row.pop('dob')
 
+            print(f"Type of id_number (Row {row_number}): {type(row['id_number'])}")
+
             data = Data(**row)
             is_valid, errors = validate_row(data)
 
