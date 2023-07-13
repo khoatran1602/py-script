@@ -33,7 +33,7 @@ def validate_row(row):
 
 def process_csv(file_path):
     with open(file_path, 'r') as csvfile:
-        fieldnames = ['name', 'married', 'gender', 'id_number']
+        fieldnames = ['name', 'married', 'gender', 'dob', 'id_number']
         Data = namedtuple('Data', fieldnames)
         reader = csv.DictReader(csvfile, fieldnames=fieldnames)
 
@@ -48,10 +48,18 @@ def process_csv(file_path):
             is_valid, errors = validate_row(data)
 
             if is_valid:
+                # Convert all fields to strings except 'id_number' and remove 'dob'
+                converted_data = {
+                    'name': str(data.name),
+                    'married': str(data.married),
+                    'gender': str(data.gender),
+                    'id_number': int(data.id_number)
+                }
+
                 if data.name in result_map:
-                    duplicated_rows.append(data)
+                    duplicated_rows.append(converted_data)
                 else:
-                    result_map[data.name] = (data.married, data.gender, data.id_number)
+                    result_map[data.name] = converted_data
             else:
                 print(f"Invalid row: {row} - Errors: {', '.join(errors)}")
 
