@@ -71,7 +71,10 @@ def process_csv(file_path):
                 }
 
                 if data.name in result_map:
-                    duplicated_rows.append(converted_data)
+                    # Move the existing data to duplicated_rows
+                    duplicated_rows.append(result_map[data.name])
+                    # Replace the existing data with the new data
+                    result_map[data.name] = converted_data
                 else:
                     result_map[data.name] = converted_data
             else:
