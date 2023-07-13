@@ -1,31 +1,39 @@
+from collections import namedtuple
 import csv
 import sys
-from collections import namedtuple
-from datetime import datetime
+
 
 def validate_name(name):
-    return len(name) <= 50
+    if len(name) > 50:
+        return False, "Invalid name"
+    return True, ""
 
 def validate_married(married):
-    return married.lower() in {'Y', 'N'}
+    if married.lower() not in {'true', 'false'}:
+        return False, "Invalid married status"
+    return True, ""
 
 def validate_gender(gender):
-    return gender in {'M', 'F'}
+    if gender not in {'M', 'F'}:
+        return False, "Invalid gender"
+    return True, ""
 
 def validate_identification_number(identification_number):
-    return identification_number.isdigit() and len(identification_number) == 10
+    if not identification_number.isdigit() or len(identification_number) != 10:
+        return False, "Invalid identification number"
+    return True, ""
 
 def validate_row(row):
-    return all([
-        validate_name(row.name),
-        validate_married(row.married),
-        validate_gender(row.gender),
-        validate_identification_number(row.id_number)
-    ])
+    errors = []
+    for validator in [validate_name, validate_married, validate_gender, validate_identification_number]:
+        valid, error = validator(getattr(row, validator.__name__))
+        if not valid:
+            errors.append(error)
+    return len(errors) == 0, errors
 
 def process_csv(file_path):
     with open(file_path, 'r') as csvfile:
-        fieldnames = ['name', 'married', 'gender', 'dob', 'id_number']
+        fieldnames = ['name', 'married', 'gender', 'id_number']
         Data = namedtuple('Data', fieldnames)
         reader = csv.DictReader(csvfile, fieldnames=fieldnames)
 
@@ -37,18 +45,15 @@ def process_csv(file_path):
 
         for row in reader:
             data = Data(**row)
-            if validate_row(data):
+            is_valid, errors = validate_row(data)
+
+            if is_valid:
                 if data.name in result_map:
                     duplicated_rows.append(data)
                 else:
-                    result_map[data.name] = (data.married, data.gender, data.dob, data.id_number)
+                    result_map[data.name] = (data.married, data.gender, data.id_number)
             else:
-                print(f"Invalid row: {row}")
-
-        # Remove duplicated rows from result_map
-        for duplicate in duplicated_rows:
-            if duplicate.name in result_map:
-                del result_map[duplicate.name]
+                print(f"Invalid row: {row} - Errors: {', '.join(errors)}")
 
     return result_map, duplicated_rows
 
@@ -59,4 +64,10 @@ if __name__ == '__main__':
 
     file_path = sys.argv[1]
     valid_data_map, duplicated_rows = process_csv(file_path)
-    print(len(duplicated_rows))
+    print("Valid data map:")
+    for key, value in valid_data_map.items():
+        print(f"{key}: {value}")
+
+    print("\nDuplicated rows:")
+    for row in duplicated_rows:
+        print(row)
