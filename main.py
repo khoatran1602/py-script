@@ -46,12 +46,10 @@ def process_csv(file_path):
         for row in reader:
             data = Data(**row)
             if validate_row(data):
-                # Use a tuple of all fields as a key to check for complete duplicates
-                row_key = (data.name, data.married, data.gender, data.dob, data.id_number)
-                if row_key in result_map:
-                    duplicated_rows.append(row_key)
+                if data.name in result_map:
+                    duplicated_rows.append(data)
                 else:
-                    result_map[row_key] = data
+                    result_map[data.name] = (data.married, data.gender, data.dob, data.id_number)
             else:
                 print(f"Invalid row: {row}")
 
