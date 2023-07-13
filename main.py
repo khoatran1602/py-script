@@ -51,6 +51,9 @@ def process_csv(file_path):
         result_map = {}
         duplicated_rows = []
 
+        # Initialize row_number variable to track the row number
+        row_number = 2  # Start at 2, since the first row is the header
+
         for row in reader:
             # Remove the 'dob' field from the row
             row.pop('dob')
@@ -64,7 +67,8 @@ def process_csv(file_path):
                     'name': str(data.name),
                     'married': str(data.married),
                     'gender': str(data.gender),
-                    'id_number': int(data.id_number)
+                    'id_number': int(data.id_number),
+                    'row_number': row_number  # Add the row_number to the converted_data dictionary
                 }
 
                 if data.name in result_map:
@@ -73,6 +77,8 @@ def process_csv(file_path):
                     result_map[data.name] = converted_data
             else:
                 print(f"Invalid row: {row} - Errors: {', '.join(errors)}")
+
+            row_number += 1  # Increment the row_number variable
 
     return result_map, duplicated_rows
 
