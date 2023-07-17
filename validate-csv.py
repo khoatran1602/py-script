@@ -5,7 +5,7 @@ csv_file_path = sys.argv[1]
 
 try:
     with open(csv_file_path, 'r') as file:
-        dialect = csv.Sniffer().sniff(file.read(1024))
+        dialect = csv.Sniffer().sniff(file.read())
         if dialect.delimiter == ',':
             print("File format is valid: CSV")
         else:
